@@ -51,6 +51,29 @@ public class AtmServiceTest
         atm.EjectCard();
 
         Assert.False(atm.HasCardInserted);
+        Assert.False(atm.IsAuthenticated);
+
+    }
+
+    [Fact]
+    public void GetBalanceTest()
+    {
+        setupService();
+        atm.InsertCard(card);
+
+        atm.EnterPin("1234");
+
+        int actual = atm.GetBalance();
+        Assert.Equal(5000, actual);
+    }
+
+    [Fact]
+    public void GetBalanceWithoutPinTest()
+    {
+        setupService();
+        atm.InsertCard(card);
+
+        Assert.Throws<InvalidOperationException>(() => atm.GetBalance());
 
     }
 }
