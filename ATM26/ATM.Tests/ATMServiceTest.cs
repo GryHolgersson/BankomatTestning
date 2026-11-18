@@ -76,4 +76,21 @@ public class AtmServiceTest
         Assert.Throws<InvalidOperationException>(() => atm.GetBalance());
 
     }
+    [Fact]
+    public void WithdrawTest()
+    {
+        setupService();
+        atm.InsertCard(card);
+
+        atm.EnterPin("1234");
+
+        atm.Withdraw(1000);
+
+        int actual = atm.GetBalance();
+        Assert.Equal(4000, actual);
+
+        Assert.Equal(4000, atm.AtmBalance);
+
+        
+    }
 }
