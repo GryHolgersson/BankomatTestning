@@ -90,7 +90,39 @@ public class AtmServiceTest
         Assert.Equal(4000, actual);
 
         Assert.Equal(4000, atm.AtmBalance);
-
         
+    }
+
+    [Fact]
+    public void WithdrawWithoutPinTest()
+    {
+        setupService();
+        atm.InsertCard(card);
+
+        Assert.Throws<InvalidOperationException>(() => atm.Withdraw(1000));
+    }
+
+    [Fact]
+    public void DepositTest()
+    {
+        setupService();
+        atm.InsertCard(card);
+
+        atm.EnterPin("1234");
+
+        atm.Deposit(1000);
+
+        int actual = atm.GetBalance();
+        Assert.Equal(6000, actual);
+
+        Assert.Equal(5000, atm.AtmBalance);
+    }
+     [Fact]
+    public void DepositWithoutPinTest()
+    {
+        setupService();
+        atm.InsertCard(card);
+
+        Assert.Throws<InvalidOperationException>(() => atm.Deposit(1000));
     }
 }
