@@ -1,4 +1,5 @@
-﻿namespace ATM.ATM.Tests;
+﻿namespace ATM.Tests;
+
 
 using Xunit;
 
@@ -38,6 +39,29 @@ public class AccountTest
         account.Withdraw(withdrawl);
         int expectedBalance = 4000;
         Assert.Equal(expectedBalance, account.Balance);
+    }
+
+    [Fact]
+    public void DepositTest()
+    {
+        var account = setupAccount(5000);
+
+        //test
+        int deposit = 1000;
+        account.Deposit(deposit);
+        int expectedBalance = 6000;
+        Assert.Equal(expectedBalance, account.Balance);
+    }
+
+    [Fact]
+    public void GetBalanceTest()
+    {
+        setupAccount(5000);
+        var account = setupAccount(5000);
+        
+        int actual = account.GetBalance();
+        Assert.Equal(5000, actual);
+
     }
 
        /* [Fact]

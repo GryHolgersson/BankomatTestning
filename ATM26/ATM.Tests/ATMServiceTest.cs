@@ -1,6 +1,5 @@
-using System.Net.NetworkInformation;
+namespace ATM.Tests;
 
-namespace ATM.ATM.Tests;
 public class AtmServiceTest
 {
     Card card;
@@ -125,4 +124,25 @@ public class AtmServiceTest
 
         Assert.Throws<InvalidOperationException>(() => atm.Deposit(1000));
     }
+
+    [Fact]
+public void WithdrawMoreThanAtmBalanceTest()
+{
+    // setup – kontot har gott om pengar, men bankomaten har mindre
+    Account account = new Account(10000);
+    Card card = new Card("1234-5678", "1234", account);
+    AtmService atm = new AtmService(5000);
+
+    atm.InsertCard(card);
+    atm.EnterPin("1234");
+
+    // handling – försök ta ut mer än det finns i bankomaten
+    bool result = atm.Withdraw(6000);
+
+    // test – uttaget ska nekas och inga pengar ska röras
+    Assert.False(result);                        // uttaget nekades
+    Assert.Equal(5000, atm.AtmBalance);          // bankomaten har kvar sina 5000
+    Assert.Equal(10000, atm.GetBalance());       // kontot har kvar sina 10 000
+}
+
 }
